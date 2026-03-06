@@ -28,18 +28,17 @@ Requires macOS 14 or later. Free and open source.
 |---|---|
 | Split right | `Cmd + Right` |
 | Split down | `Cmd + Down` |
-| Close terminal | `Cmd + W` |
-| Zoom terminal | `Cmd + Shift + Enter` |
-| Toggle notifications | `Cmd + B` |
-| Navigate panes | `Option + Arrow keys` |
-| Switch workspace | `Cmd + 1-9` |
-| Next / previous workspace | `Option + Shift + Arrow keys` |
+| Close | `Cmd + W` |
+| Zoom | `Cmd + Shift + Enter` |
+| Toggle notifications (off/on/silent) | `Cmd + B` |
+| Navigate | `Option + Arrow keys` |
+| Switch workspace | `Option + Shift + Arrow keys` |
 | New workspace | `Cmd + Shift + T` |
 | Show all shortcuts | `Cmd + /` |
 
 ## Build from source
 
-Open `smux.xcodeproj` in Xcode 15+ and hit `Cmd + R`.
+Open `smux.xcodeproj` in Xcode 15+.
 
 ## License
 
