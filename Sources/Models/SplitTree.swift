@@ -114,34 +114,82 @@ struct SplitNode: Identifiable, Equatable {
 
     /// Find the panel ID adjacent to the given panel in a direction.
     func adjacentPanel(to panelID: UUID, direction: NavigationDirection) -> UUID? {
-        let leaves = orderedLeaves(for: panelID, axis: direction.axis)
-        guard let index = leaves.firstIndex(of: panelID) else { return nil }
+        let axis = direction.axis
+        let forward = direction == .right || direction == .down
 
-        switch direction {
-        case .left, .up:
-            return index > 0 ? leaves[index - 1] : nil
-        case .right, .down:
-            return index < leaves.count - 1 ? leaves[index + 1] : nil
+        // Build path from root to the panel
+        guard let path = pathTo(panelID) else { return nil }
+
+        // Walk up the path to find the deepest same-axis split we can cross
+        for i in stride(from: path.count - 1, through: 0, by: -1) {
+            let step = path[i]
+            guard step.direction == axis else { continue }
+
+            // Going forward: we must be in the first child to cross to second
+            // Going backward: we must be in the second child to cross to first
+            if forward && step.wentFirst {
+                let perpHints = perpendicularHints(from: path, below: i)
+                return selectLeaf(in: step.second, axis: axis, forward: true, perpHints: perpHints)
+            } else if !forward && !step.wentFirst {
+                let perpHints = perpendicularHints(from: path, below: i)
+                return selectLeaf(in: step.first, axis: axis, forward: false, perpHints: perpHints)
+            }
+        }
+        return nil
+    }
+
+    // MARK: - Navigation Helpers
+
+    private struct PathStep {
+        let direction: SplitDirection
+        let wentFirst: Bool
+        let first: SplitNode
+        let second: SplitNode
+    }
+
+    /// Build the path from this node down to the leaf containing panelID.
+    private func pathTo(_ panelID: UUID) -> [PathStep]? {
+        switch content {
+        case .leaf(let pid):
+            return pid == panelID ? [] : nil
+        case .split(let dir, _, let first, let second):
+            if let sub = first.pathTo(panelID) {
+                return [PathStep(direction: dir, wentFirst: true, first: first, second: second)] + sub
+            }
+            if let sub = second.pathTo(panelID) {
+                return [PathStep(direction: dir, wentFirst: false, first: first, second: second)] + sub
+            }
+            return nil
         }
     }
 
-    /// Ordered leaves along an axis for navigation, scoped to the subtree containing panelID.
-    private func orderedLeaves(for panelID: UUID, axis: SplitDirection) -> [UUID] {
-        switch content {
+    /// Collect perpendicular position hints (first/second) from the path below the crossing point.
+    private func perpendicularHints(from path: [PathStep], below crossIndex: Int) -> [Bool] {
+        var hints: [Bool] = []
+        for i in (crossIndex + 1)..<path.count {
+            if path[i].direction != path[crossIndex].direction {
+                hints.append(path[i].wentFirst)
+            }
+        }
+        return hints
+    }
+
+    /// Select the nearest leaf in a subtree, mirroring the source panel's perpendicular positions.
+    private func selectLeaf(in node: SplitNode, axis: SplitDirection, forward: Bool, perpHints: [Bool]) -> UUID {
+        switch node.content {
         case .leaf(let pid):
-            return [pid]
+            return pid
         case .split(let dir, _, let first, let second):
             if dir == axis {
-                // Same axis as navigation: both subtrees are ordered along this direction
-                return first.orderedLeaves(for: panelID, axis: axis)
-                     + second.orderedLeaves(for: panelID, axis: axis)
+                // Same axis: take the nearest side to the crossing boundary
+                let target = forward ? first : second
+                return selectLeaf(in: target, axis: axis, forward: forward, perpHints: perpHints)
             } else {
-                // Perpendicular split: stay within the subtree containing panelID
-                if first.allPanelIDs.contains(panelID) {
-                    return first.orderedLeaves(for: panelID, axis: axis)
-                } else {
-                    return second.orderedLeaves(for: panelID, axis: axis)
-                }
+                // Perpendicular: mirror the source's position using hints
+                var remaining = perpHints
+                let goFirst = remaining.isEmpty ? true : remaining.removeFirst()
+                let target = goFirst ? first : second
+                return selectLeaf(in: target, axis: axis, forward: forward, perpHints: remaining)
             }
         }
     }
