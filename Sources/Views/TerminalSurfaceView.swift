@@ -33,8 +33,14 @@ struct TerminalSurfaceView: NSViewRepresentable {
         let home = ProcessInfo.processInfo.environment["HOME"] ?? NSHomeDirectory()
         let cwd = panel.workingDirectory ?? home
 
-        var env = Terminal.getEnvironmentVariables(termName: "xterm-256color")
-        env.append("LANG=en_US.UTF-8")
+        var env = ProcessInfo.processInfo.environment.map { "\($0.key)=\($0.value)" }
+        // Ensure TERM and LANG are set
+        if !env.contains(where: { $0.hasPrefix("TERM=") }) {
+            env.append("TERM=xterm-256color")
+        }
+        if !env.contains(where: { $0.hasPrefix("LANG=") }) {
+            env.append("LANG=en_US.UTF-8")
+        }
 
         tv.startProcess(executable: shell, args: [], environment: env, execName: nil, currentDirectory: cwd)
 
