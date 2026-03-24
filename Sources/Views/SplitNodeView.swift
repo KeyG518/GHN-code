@@ -38,14 +38,13 @@ struct SplitContainerView<First: View, Second: View>: View {
     @ViewBuilder let first: () -> First
     @ViewBuilder let second: () -> Second
 
-    /// Captured at drag start so it doesn't shift mid-drag.
     @State private var dragStartRatio: CGFloat? = nil
-    private let gap: CGFloat = 4
 
     var body: some View {
         GeometryReader { geometry in
             let isHorizontal = direction == .horizontal
             let totalSize = isHorizontal ? geometry.size.width : geometry.size.height
+            let gap = Theme.splitGap
             let firstSize = totalSize * ratio - gap / 2
             let secondSize = totalSize * (1 - ratio) - gap / 2
 
@@ -88,49 +87,62 @@ struct SplitContainerView<First: View, Second: View>: View {
         guard let startRatio = dragStartRatio, totalSize > 0 else { return }
         let newRatio = startRatio + delta / totalSize
         let clamped = max(0.1, min(0.9, newRatio))
-        // Skip sub-pixel changes to reduce jitter
         guard abs(clamped - ratio) > 0.001 else { return }
-        // Suppress animations during drag
         withTransaction(Transaction(animation: nil)) {
             onRatioChange(clamped)
         }
     }
 }
 
+// MARK: - Divider Handle
+
 struct DividerHandle: View {
     let isHorizontal: Bool
     let onDrag: (CGSize) -> Void
     let onDragEnd: () -> Void
 
+    @State private var isHovered = false
+
     var body: some View {
-        Color.clear
-            .frame(
-                width: isHorizontal ? gap : nil,
-                height: isHorizontal ? nil : gap
-            )
-            .contentShape(Rectangle().inset(by: -hitExpansion))
-            .gesture(
-                DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                    .onChanged { value in
-                        onDrag(value.translation)
-                    }
-                    .onEnded { _ in
-                        onDragEnd()
-                    }
-            )
-            .onHover { hovering in
-                if hovering {
-                    if isHorizontal {
-                        NSCursor.resizeLeftRight.push()
-                    } else {
-                        NSCursor.resizeUpDown.push()
-                    }
-                } else {
-                    NSCursor.pop()
-                }
+        ZStack {
+            // Visible divider line
+            if isHorizontal {
+                Theme.separator
+                    .frame(width: isHovered ? 2 : 1)
+                    .frame(maxHeight: .infinity)
+            } else {
+                Theme.separator
+                    .frame(height: isHovered ? 2 : 1)
+                    .frame(maxWidth: .infinity)
             }
+        }
+        .frame(
+            width: isHorizontal ? Theme.splitGap : nil,
+            height: isHorizontal ? nil : Theme.splitGap
+        )
+        .contentShape(Rectangle().inset(by: -hitExpansion))
+        .gesture(
+            DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .onChanged { value in
+                    onDrag(value.translation)
+                }
+                .onEnded { _ in
+                    onDragEnd()
+                }
+        )
+        .onHover { hovering in
+            isHovered = hovering
+            if hovering {
+                if isHorizontal {
+                    NSCursor.resizeLeftRight.push()
+                } else {
+                    NSCursor.resizeUpDown.push()
+                }
+            } else {
+                NSCursor.pop()
+            }
+        }
     }
 
-    private let gap: CGFloat = 4
     private let hitExpansion: CGFloat = 4
 }

@@ -170,29 +170,39 @@ private struct ShortcutsCheatSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             ForEach(sections, id: \.0) { section in
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text(section.0)
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(.secondary)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(Theme.textMuted)
+                        .textCase(.uppercase)
+                        .tracking(0.5)
 
                     ForEach(section.1, id: \.0) { item in
                         HStack {
                             Text(item.0)
-                                .font(.system(size: 13))
+                                .font(Theme.labelFont)
+                                .foregroundStyle(Theme.textPrimary)
                             Spacer()
                             Text(item.1)
-                                .font(.system(size: 12, design: .monospaced))
-                                .foregroundStyle(.secondary)
+                                .font(Theme.badgeFont)
+                                .foregroundStyle(Theme.textSecondary)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(
+                                    RoundedRectangle(cornerRadius: Theme.cornerRadiusSmall)
+                                        .fill(Theme.surfaceHover)
+                                )
                         }
                     }
                 }
 
                 if section.0 != sections.last?.0 {
-                    Divider()
+                    Theme.separator.frame(height: 0.5)
                 }
             }
         }
         .padding(24)
-        .frame(width: 400)
+        .frame(width: 420)
+        .background(Theme.surfaceSidebar)
     }
 }

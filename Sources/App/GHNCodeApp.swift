@@ -34,7 +34,6 @@ struct GHNCodeApp: App {
         .commands {
             AppCommands(workspaceManager: workspaceManager)
         }
-        .windowStyle(.titleBar)
-        .windowToolbarStyle(.unified)
+        .windowStyle(.hiddenTitleBar)
     }
 }

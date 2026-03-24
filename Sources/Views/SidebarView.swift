@@ -4,12 +4,43 @@ struct SidebarView: View {
     @EnvironmentObject var workspaceManager: WorkspaceManager
 
     var body: some View {
-        List {
-            Section("Workspaces") {
-                ForEach(workspaceManager.workspaces) { workspace in
-                    WorkspaceRow(workspace: workspace,
-                                 isSelected: workspace.id == workspaceManager.selectedWorkspaceID)
-                        .listRowBackground(Color.clear)
+        VStack(spacing: 0) {
+            // ── Sidebar header ──
+            HStack {
+                Text("Workspaces")
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundStyle(Theme.textMuted)
+                    .textCase(.uppercase)
+                    .tracking(0.5)
+
+                Spacer()
+
+                Button(action: {
+                    let ws = workspaceManager.createWorkspace()
+                    workspaceManager.selectedWorkspaceID = ws.id
+                }) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(Theme.textMuted)
+                        .frame(width: 24, height: 24)
+                        .background(Theme.surfaceHover)
+                        .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadiusSmall))
+                }
+                .buttonStyle(.plain)
+                .help("New Workspace (⇧⌘T)")
+            }
+            .padding(.horizontal, 14)
+            .padding(.top, 12)
+            .padding(.bottom, 8)
+
+            // ── Workspace list ──
+            ScrollView {
+                LazyVStack(spacing: 2) {
+                    ForEach(workspaceManager.workspaces) { workspace in
+                        WorkspaceRow(
+                            workspace: workspace,
+                            isSelected: workspace.id == workspaceManager.selectedWorkspaceID
+                        )
                         .onTapGesture {
                             workspaceManager.selectedWorkspaceID = workspace.id
                         }
@@ -23,84 +54,101 @@ struct SidebarView: View {
                             }
                             .disabled(workspaceManager.workspaces.count <= 1)
                         }
+                    }
                 }
+                .padding(.horizontal, 8)
             }
         }
-        .listStyle(.sidebar)
-        .scrollContentBackground(.hidden)
-        .frame(minWidth: 180)
-        .safeAreaInset(edge: .bottom) {
-            Button(action: {
-                let ws = workspaceManager.createWorkspace()
-                workspaceManager.selectedWorkspaceID = ws.id
-            }) {
-                Label("New Workspace", systemImage: "plus")
-            }
-            .buttonStyle(.borderless)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .help("New Workspace (⇧⌘T)")
-        }
+        .frame(minWidth: Theme.sidebarMinWidth)
+        .background(Theme.surfaceSidebar)
     }
 }
+
+// MARK: - Workspace Row
 
 struct WorkspaceRow: View {
     @ObservedObject var workspace: Workspace
     var isSelected: Bool = false
     @State private var isHovered: Bool = false
 
+    /// Status dot color based on workspace activity
+    private var statusColor: Color {
+        let summary = workspace.activitySummary
+        if summary.attention > 0 { return Theme.warning }
+        if summary.active > 0 { return Theme.success }
+        return Theme.idle
+    }
+
+    /// Whether the status dot should pulse (attention needed)
+    private var shouldPulse: Bool {
+        workspace.activitySummary.attention > 0
+    }
+
     var body: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 10) {
+            // Status indicator dot
+            StatusDot(
+                color: statusColor,
+                size: 7,
+                isPulsing: shouldPulse
+            )
+
+            // Workspace name
             if workspace.isRenaming {
                 RenameField(text: $workspace.name) {
                     workspace.isRenaming = false
                 }
-                .font(.system(size: 13))
+                .font(Theme.labelFont)
                 .frame(maxWidth: 140)
             } else {
-                Text(workspace.name)
-                    .font(.system(size: 13))
-                    .lineLimit(1)
-                    .foregroundStyle(isSelected ? .primary : isHovered ? .primary : .secondary)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(workspace.name)
+                        .font(Theme.labelFont)
+                        .lineLimit(1)
+                        .foregroundStyle(isSelected ? Theme.textBright : (isHovered ? Theme.textPrimary : Theme.textSecondary))
+
+                    // Panel count subtitle
+                    let count = workspace.panels.count
+                    if count > 1 {
+                        Text("\(count) terminals")
+                            .font(.system(size: 10))
+                            .foregroundStyle(Theme.textMuted)
+                    }
+                }
             }
 
             Spacer()
 
+            // Activity count badge (only for attention)
             let summary = workspace.activitySummary
-
             if summary.attention > 0 {
-                BadgeView(count: summary.attention, color: .orange)
-            } else if summary.active > 0 {
-                BadgeView(count: summary.active, color: .green)
+                Text("\(summary.attention)")
+                    .font(Theme.badgeFont)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 2)
+                    .background(
+                        RoundedRectangle(cornerRadius: Theme.cornerRadiusSmall)
+                            .fill(Theme.warning)
+                    )
             }
         }
-        .padding(.vertical, 6)
-        .padding(.horizontal, 8)
+        .padding(.vertical, 7)
+        .padding(.horizontal, 10)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 6)
-                .fill(
-                    isSelected ? Color.white.opacity(0.1) : isHovered ? Color.white.opacity(0.05) : Color.clear
-                )
+            RoundedRectangle(cornerRadius: Theme.cornerRadiusRow)
+                .fill(rowBackground)
         )
         .contentShape(Rectangle())
         .onHover { hovering in
             isHovered = hovering
         }
     }
-}
 
-struct BadgeView: View {
-    let count: Int
-    let color: Color
-
-    var body: some View {
-        Text("\(count)")
-            .font(.system(size: 10, weight: .semibold, design: .rounded))
-            .foregroundStyle(.white)
-            .padding(.horizontal, 5)
-            .padding(.vertical, 1)
-            .background(Capsule().fill(color))
+    private var rowBackground: Color {
+        if isSelected { return Theme.surfaceSelected }
+        if isHovered { return Theme.surfaceHover }
+        return .clear
     }
 }

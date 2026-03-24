@@ -1,12 +1,5 @@
 import SwiftUI
 
-private let bgDark = Color(nsColor: NSColor(red: 0.1, green: 0.1, blue: 0.12, alpha: 1))
-private let bgTitlebar = Color(nsColor: NSColor(red: 0.12, green: 0.12, blue: 0.14, alpha: 1))
-private let borderDim = Color(nsColor: NSColor(red: 0.22, green: 0.22, blue: 0.24, alpha: 1))
-private let attentionOrange = Color(red: 0.9, green: 0.55, blue: 0.1)
-private let activeGreen = Color(red: 0.2, green: 0.55, blue: 0.3)
-private let focusBlue = Color(red: 0.35, green: 0.55, blue: 0.95)
-
 struct PaneView: View {
     @EnvironmentObject var workspaceManager: WorkspaceManager
     @ObservedObject var panel: TerminalPanel
@@ -33,122 +26,165 @@ struct PaneView: View {
         }
     }
 
+    /// Status dot color based on panel state
+    private var statusColor: Color {
+        if panel.needsAttention { return Theme.warning }
+        if case .active = panel.activityState { return Theme.success }
+        if case .exited(let code) = panel.activityState {
+            return code == 0 ? Theme.textMuted : Theme.danger
+        }
+        return Theme.idle
+    }
+
     private var borderColor: Color {
-        if panel.needsAttention {
-            return attentionOrange.opacity(0.5)
-        }
-        if isFocused {
-            return focusBlue.opacity(0.5)
-        }
-        if case .active = panel.activityState {
-            return activeGreen.opacity(0.5)
-        }
-        return borderDim
+        if panel.needsAttention { return Theme.warning.opacity(0.5) }
+        if isFocused { return Theme.focus }
+        return Theme.border
     }
 
     private var borderWidth: CGFloat {
-        if panel.needsAttention || isFocused { return 1.5 }
-        return 1
+        if panel.needsAttention || isFocused { return Theme.borderWidthFocused }
+        return Theme.borderWidth
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            // Minimal title bar
-            HStack(spacing: 6) {
-                if panel.isRenaming {
-                    RenameField(text: $panel.title) {
-                        panel.hasCustomTitle = !panel.title.trimmingCharacters(in: .whitespaces).isEmpty
-                        panel.isRenaming = false
-                    }
-                    .font(.system(size: 11, weight: .medium))
-                    .frame(maxWidth: 200)
-                } else {
-                    Text(panel.title)
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(isFocused ? .white.opacity(0.9) : .white.opacity(0.4))
-                        .lineLimit(1)
-                        .contextMenu {
-                            Button("Rename") {
-                                panel.isRenaming = true
-                            }
-                        }
-                }
+            // ── Title bar ──
+            titleBar
+            
+            // ── Thin separator ──
+            Theme.separator.frame(height: 0.5)
 
-                Spacer()
-
-                if case .exited(let code) = panel.activityState {
-                    Text("exit \(code)")
-                        .font(.system(size: 10, design: .monospaced))
-                        .foregroundColor(code == 0 ? .white.opacity(0.3) : .red.opacity(0.8))
-                }
-
-                // Watch toggle + split/close buttons
-                HStack(spacing: 0) {
-                    PaneTitleButton(
-                        systemName: watchIcon,
-                        help: watchHelp
-                    ) {
-                        panel.watchMode = panel.watchMode.next
-                    }
-
-                    PaneTitleButton(systemName: "square.split.2x1", help: "Split Right (⌘→)") {
-                        workspace.focusedPanelID = panel.id
-                        workspace.splitFocusedPane(direction: .horizontal)
-                    }
-                    PaneTitleButton(systemName: "square.split.1x2", help: "Split Down (⌘↓)") {
-                        workspace.focusedPanelID = panel.id
-                        workspace.splitFocusedPane(direction: .vertical)
-                    }
-                    if workspace.rootNode.leafCount > 1 {
-                        PaneTitleButton(systemName: "xmark", help: "Close (⌘W)") {
-                            workspace.focusedPanelID = panel.id
-                            workspace.closeFocusedPane()
-                        }
-                    }
-                }
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 4)
-            .background(panel.needsAttention ? attentionOrange.opacity(0.15) : bgTitlebar)
+            // ── Terminal ──
+            TerminalSurfaceView(
+                panel: panel,
+                isFocused: isFocused,
+                isWorkspaceSelected: workspace.id == workspaceManager.selectedWorkspaceID,
+                suppressFocus: workspace.isRenaming
+            )
             .onTapGesture {
                 panel.clearAttention()
                 workspace.focusedPanelID = panel.id
             }
-
-            // Terminal
-            TerminalSurfaceView(panel: panel, isFocused: isFocused, isWorkspaceSelected: workspace.id == workspaceManager.selectedWorkspaceID, suppressFocus: workspace.isRenaming)
-                .padding(.horizontal, 8)
-                .onTapGesture {
-                    panel.clearAttention()
-                    workspace.focusedPanelID = panel.id
-                }
         }
-        .background(bgDark)
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .background(Theme.surfacePane)
+        .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
+            RoundedRectangle(cornerRadius: Theme.cornerRadius, style: .continuous)
                 .strokeBorder(borderColor, lineWidth: borderWidth)
         )
     }
+
+    // MARK: - Title Bar
+
+    private var titleBar: some View {
+        HStack(spacing: 8) {
+            // Status dot
+            StatusDot(
+                color: statusColor,
+                size: 6,
+                isPulsing: panel.needsAttention
+            )
+
+            // Title or rename field
+            if panel.isRenaming {
+                RenameField(text: $panel.title) {
+                    panel.hasCustomTitle = !panel.title.trimmingCharacters(in: .whitespaces).isEmpty
+                    panel.isRenaming = false
+                }
+                .font(Theme.titleBarFont)
+                .frame(maxWidth: 200)
+            } else {
+                Text(panel.title)
+                    .font(Theme.titleBarFont)
+                    .foregroundColor(isFocused ? Theme.textBright : Theme.textMuted)
+                    .lineLimit(1)
+                    .contextMenu {
+                        Button("Rename") {
+                            panel.isRenaming = true
+                        }
+                    }
+            }
+
+            Spacer()
+
+            // Exit code badge
+            if case .exited(let code) = panel.activityState {
+                Text("exit \(code)")
+                    .font(Theme.badgeFont)
+                    .foregroundColor(code == 0 ? Theme.textMuted : Theme.danger)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(
+                        RoundedRectangle(cornerRadius: Theme.cornerRadiusSmall)
+                            .fill(code == 0 ? Theme.surfaceHover : Theme.danger.opacity(0.15))
+                    )
+            }
+
+            // Action buttons
+            HStack(spacing: 0) {
+                PaneTitleButton(
+                    systemName: watchIcon,
+                    help: watchHelp
+                ) {
+                    panel.watchMode = panel.watchMode.next
+                }
+
+                PaneTitleButton(systemName: "rectangle.split.1x2", help: "Split Right (⌘→)") {
+                    workspace.focusedPanelID = panel.id
+                    workspace.splitFocusedPane(direction: .horizontal)
+                }
+                PaneTitleButton(systemName: "rectangle.split.2x1", help: "Split Down (⌘↓)") {
+                    workspace.focusedPanelID = panel.id
+                    workspace.splitFocusedPane(direction: .vertical)
+                }
+                if workspace.rootNode.leafCount > 1 {
+                    PaneTitleButton(systemName: "xmark", help: "Close (⌘W)") {
+                        workspace.focusedPanelID = panel.id
+                        workspace.closeFocusedPane()
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 10)
+        .frame(height: Theme.titleBarHeight)
+        .background(
+            panel.needsAttention
+                ? Theme.warning.opacity(0.08)
+                : (isFocused ? Theme.surfaceTitlebar : Theme.surfacePane)
+        )
+        .onTapGesture {
+            panel.clearAttention()
+            workspace.focusedPanelID = panel.id
+        }
+    }
 }
+
+// MARK: - Title Bar Button
 
 struct PaneTitleButton: View {
     let systemName: String
     let help: String
     let action: () -> Void
+    @State private var isHovered = false
 
     var body: some View {
         Button(action: action) {
             Image(systemName: systemName)
                 .font(.system(size: 10, weight: .medium))
-                .foregroundColor(.white.opacity(0.4))
-                .frame(width: 20, height: 20)
+                .foregroundColor(isHovered ? Theme.textPrimary : Theme.textMuted)
+                .frame(width: 24, height: 24)
+                .background(isHovered ? Theme.surfaceHover : .clear)
+                .clipShape(RoundedRectangle(cornerRadius: Theme.cornerRadiusSmall))
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .onHover { isHovered = $0 }
         .help(help)
     }
 }
+
+// MARK: - Rename Field
 
 struct RenameField: View {
     @Binding var text: String
