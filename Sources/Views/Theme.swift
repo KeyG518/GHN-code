@@ -82,7 +82,19 @@ enum Theme {
     /// Status bar height
     static let statusBarHeight: CGFloat = 28
     /// Sidebar width
-    static let sidebarMinWidth: CGFloat = 200
+    static let sidebarMinWidth: CGFloat = 140
+
+    // MARK: Diff Colors
+    /// Addition line background
+    static let diffAdditionBg = Color(red: 0.30, green: 0.69, blue: 0.31).opacity(0.1)
+    /// Deletion line background
+    static let diffDeletionBg = Color(red: 0.90, green: 0.22, blue: 0.21).opacity(0.1)
+    /// Hunk header text color
+    static let diffHunkHeader = Color.white.opacity(0.25)
+
+    // MARK: Right Sidebar
+    /// Right sidebar minimum width
+    static let rightSidebarMinWidth: CGFloat = 250
 
     // MARK: Fonts
     /// Monospaced font for terminal
@@ -97,6 +109,8 @@ enum Theme {
     static let titleBarFont = Font.system(size: 11, weight: .medium)
     /// Status bar font
     static let statusBarFont = Font.system(size: 11, weight: .regular)
+    /// Diff / code font (monospaced)
+    static let diffFont = Font.system(size: 11, weight: .regular, design: .monospaced)
 }
 
 // MARK: - Status Indicator

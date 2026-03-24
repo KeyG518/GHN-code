@@ -7,6 +7,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 
         // Prevent ⌘W from closing the window — we handle it as "close pane"
         NSWindow.swizzlePerformClose()
+
+        // Style the main window for a clean integrated look
+        DispatchQueue.main.async {
+            if let window = NSApp.mainWindow ?? NSApp.windows.first {
+                window.titlebarAppearsTransparent = true
+                window.titleVisibility = .hidden
+                window.isMovableByWindowBackground = true
+                window.backgroundColor = NSColor(red: 0.04, green: 0.04, blue: 0.043, alpha: 1)
+            }
+        }
     }
 
     func applicationWillTerminate(_ notification: Notification) {

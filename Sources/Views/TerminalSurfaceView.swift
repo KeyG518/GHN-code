@@ -22,6 +22,8 @@ struct TerminalSurfaceView: NSViewRepresentable {
         let tv = GHNTerminalView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
         tv.panel = panel
         tv.processDelegate = context.coordinator
+        tv.wantsLayer = true
+        tv.layer?.masksToBounds = true
         context.coordinator.terminalView = tv
 
         // Dark theme

@@ -5,6 +5,7 @@ import Combine
 final class WorkspaceManager: ObservableObject {
     @Published var workspaces: [Workspace] = []
     @Published var selectedWorkspaceID: UUID?
+    @Published var showDiffPanel: Bool = false
 
     private var workspaceCancellables: [UUID: AnyCancellable] = [:]
     var nextWorkspaceNumber = 1

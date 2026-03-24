@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1517CFBAF9CAADB55C1BAA02 /* TerminalPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2F56CA5D22D9BF2B7BBBE59 /* TerminalPanel.swift */; };
 		2ECB4EC9FF76A07676CBE5B2 /* AppCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A12313DD74934B6613C7B5 /* AppCommands.swift */; };
+		31E2AA58DEC809FCB0172A5B /* GitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = E815DBD675E5887408604705 /* GitStatus.swift */; };
 		3D32163E40A5BF67A9CA0DB6 /* ActivityDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CD04CA63678E1E5A88C6DD /* ActivityDetector.swift */; };
 		474545F13DC8D1DEDF9DFE82 /* PaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E81732037AA6C220F97524D /* PaneView.swift */; };
 		54427CC4A185D0F7E92E3FDB /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D94E8F7178CEE997BFBD2DE /* Workspace.swift */; };
@@ -20,7 +21,10 @@
 		8A7774AEB812A9BA8489E173 /* WatchMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD10B574AA458ED7D091E06 /* WatchMode.swift */; };
 		8F55B8B347A67232C91A7585 /* SplitNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026ABF7229DF2DBD91CD5E08 /* SplitNodeView.swift */; };
 		914086771A024080C7894EAB /* PersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E052B504AB076F2B5E00019 /* PersistenceManager.swift */; };
+		93A07A435BB24FC35DC7595B /* GitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEFFC7B10B780EE4D8F6BA4 /* GitService.swift */; };
+		95DD063D5BBF9E077B4BD940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D3AF6CC0E1182388537C93B /* Assets.xcassets */; };
 		AAA3037710FAB3C070DAF33D /* SplitTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272326128BF72F00F0552F76 /* SplitTree.swift */; };
+		AF21A8B57790DFAA2AC23376 /* GitDiffPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E76D0A57B44BB629843EFDE /* GitDiffPanel.swift */; };
 		B305A465CE244B138A9D7160 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D70000BF73C662217A74A9 /* ContentView.swift */; };
 		B32616AB004B795F225B03D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 782A7FA5100E5136FCA46A8F /* AppDelegate.swift */; };
 		BE700B649DD10EFAF6D08AF5 /* WorkspaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208EEFBC1E1278848A5CB30B /* WorkspaceManager.swift */; };
@@ -37,6 +41,7 @@
 		21D70000BF73C662217A74A9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		272326128BF72F00F0552F76 /* SplitTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitTree.swift; sourceTree = "<group>"; };
 		352E37E25947E3A4FCCE0820 /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
+		3E76D0A57B44BB629843EFDE /* GitDiffPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitDiffPanel.swift; sourceTree = "<group>"; };
 		4AD10B574AA458ED7D091E06 /* WatchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMode.swift; sourceTree = "<group>"; };
 		4E052B504AB076F2B5E00019 /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
 		5E2E320A75E69F49840E8235 /* GHN-code.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GHN-code.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,9 +50,12 @@
 		7E81732037AA6C220F97524D /* PaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneView.swift; sourceTree = "<group>"; };
 		81A12313DD74934B6613C7B5 /* AppCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCommands.swift; sourceTree = "<group>"; };
 		8F9836D7AD06DF47F2197F7F /* SearchOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOverlay.swift; sourceTree = "<group>"; };
+		9D3AF6CC0E1182388537C93B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D94E8F7178CEE997BFBD2DE /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		C9779E9F27B17FDB4A064A73 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 		D1C92B96F1003462B84892BB /* GHNCodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHNCodeApp.swift; sourceTree = "<group>"; };
+		DDEFFC7B10B780EE4D8F6BA4 /* GitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitService.swift; sourceTree = "<group>"; };
+		E815DBD675E5887408604705 /* GitStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitStatus.swift; sourceTree = "<group>"; };
 		F2F56CA5D22D9BF2B7BBBE59 /* TerminalPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalPanel.swift; sourceTree = "<group>"; };
 		F7EEBF8344FC732627383A85 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				21D70000BF73C662217A74A9 /* ContentView.swift */,
+				3E76D0A57B44BB629843EFDE /* GitDiffPanel.swift */,
 				7E81732037AA6C220F97524D /* PaneView.swift */,
 				8F9836D7AD06DF47F2197F7F /* SearchOverlay.swift */,
 				C9779E9F27B17FDB4A064A73 /* SidebarView.swift */,
@@ -77,6 +86,14 @@
 				352E37E25947E3A4FCCE0820 /* WorkspaceView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4195C0D66B0DDFCF5498815E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9D3AF6CC0E1182388537C93B /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		5666EE1C2B31A78A6F0F2931 /* App */ = {
@@ -104,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				053E738B84B9931A4C16D214 /* ActivityState.swift */,
+				E815DBD675E5887408604705 /* GitStatus.swift */,
 				272326128BF72F00F0552F76 /* SplitTree.swift */,
 				F2F56CA5D22D9BF2B7BBBE59 /* TerminalPanel.swift */,
 				4AD10B574AA458ED7D091E06 /* WatchMode.swift */,
@@ -116,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				01CD04CA63678E1E5A88C6DD /* ActivityDetector.swift */,
+				DDEFFC7B10B780EE4D8F6BA4 /* GitService.swift */,
 				4E052B504AB076F2B5E00019 /* PersistenceManager.swift */,
 				208EEFBC1E1278848A5CB30B /* WorkspaceManager.swift */,
 			);
@@ -133,6 +152,7 @@
 		EFA87F26EF662F7E792C13CE = {
 			isa = PBXGroup;
 			children = (
+				4195C0D66B0DDFCF5498815E /* Resources */,
 				60264530B9B94F2A14AF3751 /* Sources */,
 				EB827973613605E9DA8149E1 /* Products */,
 			);
@@ -146,6 +166,7 @@
 			buildConfigurationList = D81B4E27991689C18E3587DC /* Build configuration list for PBXNativeTarget "GHN-code" */;
 			buildPhases = (
 				EEC764E61A2886AF09FEC7F4 /* Sources */,
+				1273A44F2AA0908665D44C64 /* Resources */,
 				35C551634D90AE33A7CEA974 /* Frameworks */,
 			);
 			buildRules = (
@@ -193,6 +214,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		1273A44F2AA0908665D44C64 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95DD063D5BBF9E077B4BD940 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EEC764E61A2886AF09FEC7F4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -204,6 +236,9 @@
 				B32616AB004B795F225B03D1 /* AppDelegate.swift in Sources */,
 				B305A465CE244B138A9D7160 /* ContentView.swift in Sources */,
 				7EF084192BC7524AE48261D6 /* GHNCodeApp.swift in Sources */,
+				AF21A8B57790DFAA2AC23376 /* GitDiffPanel.swift in Sources */,
+				93A07A435BB24FC35DC7595B /* GitService.swift in Sources */,
+				31E2AA58DEC809FCB0172A5B /* GitStatus.swift in Sources */,
 				474545F13DC8D1DEDF9DFE82 /* PaneView.swift in Sources */,
 				914086771A024080C7894EAB /* PersistenceManager.swift in Sources */,
 				DFB690A8B15F8FB5879BEEE7 /* SearchOverlay.swift in Sources */,

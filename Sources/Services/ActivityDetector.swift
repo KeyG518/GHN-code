@@ -11,6 +11,9 @@ final class ActivityDetector: ObservableObject {
     private weak var workspaceManager: WorkspaceManager?
     private let attentionSound = NSSound(named: "Tink")
 
+    /// GitService to notify on terminal idle transitions (triggers diff refresh).
+    weak var gitService: GitService?
+
     func start(workspaceManager: WorkspaceManager) {
         self.workspaceManager = workspaceManager
         requestNotificationPermission()
@@ -70,6 +73,12 @@ final class ActivityDetector: ObservableObject {
                 let wasCommand = panel.commandSubmitted
                 let hadOutput = panel.outputSinceDefocus
                 panel.transitionToIdle()
+
+                // Trigger git refresh when a terminal command finishes
+                // (likely a file save, git operation, build, etc.)
+                if wasCommand, let git = gitService {
+                    Task { await git.refresh() }
+                }
 
                 if wasCommand && !isActuallyVisible && hadOutput && panel.watchMode != .off {
                     panel.needsAttention = true

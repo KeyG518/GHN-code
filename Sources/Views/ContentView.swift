@@ -2,12 +2,13 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var workspaceManager: WorkspaceManager
+    @EnvironmentObject var gitService: GitService
 
     var body: some View {
         HSplitView {
             // ── Left sidebar ──
             SidebarView()
-                .frame(minWidth: 180, maxWidth: 280)
+                .frame(minWidth: 140, maxWidth: 220)
 
             // ── Main content area ──
             VStack(spacing: 0) {
@@ -29,6 +30,12 @@ struct ContentView: View {
 
                 // ── Status bar ──
                 StatusBarView()
+            }
+
+            // ── Right sidebar (Code Review) ──
+            if workspaceManager.showDiffPanel {
+                GitDiffPanel()
+                    .frame(minWidth: Theme.rightSidebarMinWidth, maxWidth: 400)
             }
         }
         .background(Theme.surfacePrimary)
@@ -57,6 +64,7 @@ struct ContentView: View {
 
 struct StatusBarView: View {
     @EnvironmentObject var workspaceManager: WorkspaceManager
+    @EnvironmentObject var gitService: GitService
 
     private var workspace: Workspace? {
         workspaceManager.selectedWorkspace
@@ -86,6 +94,22 @@ struct StatusBarView: View {
                     Text("\(ws.panels.count) terminal\(ws.panels.count == 1 ? "" : "s")")
                         .font(Theme.statusBarFont)
                         .foregroundColor(Theme.textSecondary)
+                }
+
+                // Git branch
+                if let branch = gitService.branchName {
+                    Theme.separator
+                        .frame(width: 1, height: 14)
+
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.triangle.branch")
+                            .font(.system(size: 10))
+                            .foregroundColor(Theme.accent)
+                        Text(branch)
+                            .font(Theme.statusBarFont)
+                            .foregroundColor(Theme.textSecondary)
+                            .lineLimit(1)
+                    }
                 }
 
                 // Activity summary
@@ -121,6 +145,27 @@ struct StatusBarView: View {
                         .fill(Theme.accent.opacity(0.15))
                 )
             }
+
+            // Code Review toggle button
+            Button(action: {
+                workspaceManager.showDiffPanel.toggle()
+            }) {
+                HStack(spacing: 4) {
+                    Image(systemName: "arrow.triangle.branch")
+                        .font(.system(size: 10))
+                    Text("Diff")
+                        .font(Theme.statusBarFont)
+                }
+                .foregroundColor(workspaceManager.showDiffPanel ? Theme.accent : Theme.textMuted)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 3)
+                .background(
+                    RoundedRectangle(cornerRadius: Theme.cornerRadiusSmall)
+                        .fill(workspaceManager.showDiffPanel ? Theme.accent.opacity(0.15) : Theme.surfaceHover)
+                )
+            }
+            .buttonStyle(.plain)
+            .help("Toggle Code Review panel")
 
             // Keyboard shortcut hint
             Text("⌘/ for shortcuts")

@@ -29,9 +29,9 @@ struct SidebarView: View {
                 .buttonStyle(.plain)
                 .help("New Workspace (⇧⌘T)")
             }
-            .padding(.horizontal, 14)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.horizontal, 10)
+            .padding(.top, 10)
+            .padding(.bottom, 6)
 
             // ── Workspace list ──
             ScrollView {
@@ -56,7 +56,7 @@ struct SidebarView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 6)
             }
         }
         .frame(minWidth: Theme.sidebarMinWidth)
@@ -85,11 +85,11 @@ struct WorkspaceRow: View {
     }
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 8) {
             // Status indicator dot
             StatusDot(
                 color: statusColor,
-                size: 7,
+                size: 6,
                 isPulsing: shouldPulse
             )
 
@@ -98,12 +98,12 @@ struct WorkspaceRow: View {
                 RenameField(text: $workspace.name) {
                     workspace.isRenaming = false
                 }
-                .font(Theme.labelFont)
-                .frame(maxWidth: 140)
+                .font(Theme.labelSmallFont)
+                .frame(maxWidth: 120)
             } else {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(workspace.name)
-                        .font(Theme.labelFont)
+                        .font(Theme.labelSmallFont)
                         .lineLimit(1)
                         .foregroundStyle(isSelected ? Theme.textBright : (isHovered ? Theme.textPrimary : Theme.textSecondary))
 
@@ -133,8 +133,8 @@ struct WorkspaceRow: View {
                     )
             }
         }
-        .padding(.vertical, 7)
-        .padding(.horizontal, 10)
+        .padding(.vertical, 5)
+        .padding(.horizontal, 8)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: Theme.cornerRadiusRow)

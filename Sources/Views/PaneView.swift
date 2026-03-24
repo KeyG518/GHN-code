@@ -62,6 +62,7 @@ struct PaneView: View {
                 isWorkspaceSelected: workspace.id == workspaceManager.selectedWorkspaceID,
                 suppressFocus: workspace.isRenaming
             )
+            .clipped()
             .onTapGesture {
                 panel.clearAttention()
                 workspace.focusedPanelID = panel.id
@@ -130,11 +131,11 @@ struct PaneView: View {
                     panel.watchMode = panel.watchMode.next
                 }
 
-                PaneTitleButton(systemName: "rectangle.split.1x2", help: "Split Right (⌘→)") {
+                PaneTitleButton(systemName: "rectangle.split.2x1", help: "Split Right (⌘→)") {
                     workspace.focusedPanelID = panel.id
                     workspace.splitFocusedPane(direction: .horizontal)
                 }
-                PaneTitleButton(systemName: "rectangle.split.2x1", help: "Split Down (⌘↓)") {
+                PaneTitleButton(systemName: "rectangle.split.1x2", help: "Split Down (⌘↓)") {
                     workspace.focusedPanelID = panel.id
                     workspace.splitFocusedPane(direction: .vertical)
                 }
@@ -153,7 +154,12 @@ struct PaneView: View {
                 ? Theme.warning.opacity(0.08)
                 : (isFocused ? Theme.surfaceTitlebar : Theme.surfacePane)
         )
-        .onTapGesture {
+        .onTapGesture(count: 2) {
+            // Double-click title bar to zoom/unzoom (like macOS window double-click)
+            workspace.focusedPanelID = panel.id
+            workspace.toggleZoom()
+        }
+        .onTapGesture(count: 1) {
             panel.clearAttention()
             workspace.focusedPanelID = panel.id
         }
