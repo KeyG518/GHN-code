@@ -14,12 +14,12 @@ struct TerminalSurfaceView: NSViewRepresentable {
 
     func makeNSView(context: Context) -> NSView {
         // Reuse existing terminal view if the panel already has one (survives workspace switches)
-        if let existing = panel.terminalView as? SmuxTerminalView {
+        if let existing = panel.terminalView as? GHNTerminalView {
             context.coordinator.terminalView = existing
             return existing
         }
 
-        let tv = SmuxTerminalView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
+        let tv = GHNTerminalView(frame: NSRect(x: 0, y: 0, width: 600, height: 400))
         tv.panel = panel
         tv.processDelegate = context.coordinator
         context.coordinator.terminalView = tv
@@ -73,7 +73,7 @@ struct TerminalSurfaceView: NSViewRepresentable {
 
     final class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
         let panel: TerminalPanel
-        weak var terminalView: SmuxTerminalView?
+        weak var terminalView: GHNTerminalView?
 
         init(panel: TerminalPanel) {
             self.panel = panel
@@ -118,7 +118,7 @@ func getProcessCWD(pid: pid_t) -> String? {
 
 // MARK: - Custom Terminal View
 
-final class SmuxTerminalView: LocalProcessTerminalView {
+final class GHNTerminalView: LocalProcessTerminalView {
     weak var panel: TerminalPanel?
 
     /// Extract scrollback text from the terminal buffer (for session persistence).

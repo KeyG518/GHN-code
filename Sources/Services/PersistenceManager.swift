@@ -64,9 +64,9 @@ final class PersistenceManager {
 
     private let fileURL: URL = {
         let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        let smuxDir = appSupport.appendingPathComponent("smux", isDirectory: true)
-        try? FileManager.default.createDirectory(at: smuxDir, withIntermediateDirectories: true)
-        return smuxDir.appendingPathComponent("state.json")
+        let ghnDir = appSupport.appendingPathComponent("GHN-code", isDirectory: true)
+        try? FileManager.default.createDirectory(at: ghnDir, withIntermediateDirectories: true)
+        return ghnDir.appendingPathComponent("state.json")
     }()
 
     func save(workspaceManager: WorkspaceManager) {
@@ -79,7 +79,7 @@ final class PersistenceManager {
             let data = try encoder.encode(snapshot)
             try data.write(to: fileURL, options: .atomic)
         } catch {
-            print("smux: failed to save state: \(error)")
+            print("GHN-code: failed to save state: \(error)")
         }
     }
 
@@ -111,7 +111,7 @@ final class PersistenceManager {
                 }
             }
         } catch {
-            print("smux: failed to restore state: \(error)")
+            print("GHN-code: failed to restore state: \(error)")
             manager.createWorkspace()
         }
     }
@@ -122,7 +122,7 @@ final class PersistenceManager {
         let panelSnapshots = workspace.panels.values.map { panel -> PanelSnapshot in
             // Get live CWD from running process if possible
             let liveCWD: String?
-            if let tv = panel.terminalView as? SmuxTerminalView {
+            if let tv = panel.terminalView as? GHNTerminalView {
                 liveCWD = getProcessCWD(pid: tv.process.shellPid) ?? panel.workingDirectory
             } else {
                 liveCWD = panel.workingDirectory
@@ -130,7 +130,7 @@ final class PersistenceManager {
 
             // Only save scrollback if user has run commands (avoids accumulating empty prompts on restart)
             let scrollback = panel.hasHadActivity
-                ? (panel.terminalView as? SmuxTerminalView)?.getScrollbackText()
+                ? (panel.terminalView as? GHNTerminalView)?.getScrollbackText()
                 : nil
 
             return PanelSnapshot(

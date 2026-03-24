@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct smuxApp: App {
+struct GHNCodeApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var workspaceManager = WorkspaceManager()
     @StateObject private var activityDetector = ActivityDetector()

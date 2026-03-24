@@ -126,7 +126,7 @@ struct AppCommands: Commands {
     }
 
     private func showShortcutsWindow() {
-        let id = "smux-shortcuts"
+        let id = "ghn-shortcuts"
         // Reuse existing window if open
         if let existing = NSApp.windows.first(where: { $0.identifier?.rawValue == id }) {
             existing.makeKeyAndOrderFront(nil)

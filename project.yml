@@ -1,6 +1,6 @@
-name: smux
+name: GHN-code
 options:
-  bundleIdPrefix: com.smux
+  bundleIdPrefix: com.ghn
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "15.0"
@@ -12,7 +12,7 @@ packages:
     from: "1.0.0"
 
 targets:
-  smux:
+  GHN-code:
     type: application
     platform: macOS
     sources:
@@ -23,16 +23,16 @@ targets:
       - package: SwiftTerm
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.smux.app
-        PRODUCT_NAME: smux
+        PRODUCT_BUNDLE_IDENTIFIER: com.ghn.code
+        PRODUCT_NAME: GHN-code
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: 1
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         SWIFT_VERSION: "5.9"
-        CODE_SIGN_ENTITLEMENTS: Resources/smux.entitlements
+        CODE_SIGN_ENTITLEMENTS: Resources/GHNCode.entitlements
         CODE_SIGN_IDENTITY: "-"
         INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.developer-tools
-        INFOPLIST_KEY_CFBundleDisplayName: smux
+        INFOPLIST_KEY_CFBundleDisplayName: GHN-code
         INFOPLIST_KEY_NSHumanReadableCopyright: ""
         GENERATE_INFOPLIST_FILE: YES
         ENABLE_HARDENED_RUNTIME: NO

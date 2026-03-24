@@ -31,18 +31,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
 extension NSWindow {
     static func swizzlePerformClose() {
         let original = #selector(NSWindow.performClose(_:))
-        let swizzled = #selector(NSWindow.smux_performClose(_:))
+        let swizzled = #selector(NSWindow.ghn_performClose(_:))
         guard let originalMethod = class_getInstanceMethod(NSWindow.self, original),
               let swizzledMethod = class_getInstanceMethod(NSWindow.self, swizzled) else { return }
         method_exchangeImplementations(originalMethod, swizzledMethod)
     }
 
-    @objc func smux_performClose(_ sender: Any?) {
+    @objc func ghn_performClose(_ sender: Any?) {
         // Only block close for the main app window — ⌘W is handled by AppCommands as "Close Pane"
         if self === NSApp.mainWindow {
             return
         }
         // For other windows (shortcuts panel, etc.), call the original implementation
-        smux_performClose(sender)
+        ghn_performClose(sender)
     }
 }

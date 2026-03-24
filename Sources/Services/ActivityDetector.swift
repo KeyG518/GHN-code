@@ -28,7 +28,7 @@ final class ActivityDetector: ObservableObject {
             keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
                 // Return (36) or numpad Enter (76) — only when a terminal view has focus
                 if event.keyCode == 36 || event.keyCode == 76,
-                   let responder = event.window?.firstResponder, responder is SmuxTerminalView {
+                   let responder = event.window?.firstResponder, responder is GHNTerminalView {
                     Task { @MainActor [weak self] in
                         self?.handleEnterPress()
                     }
@@ -51,7 +51,7 @@ final class ActivityDetector: ObservableObject {
         for workspace in manager.workspaces {
             for panel in workspace.panels.values {
                 // The user is "actually looking" at the terminal only when ALL three hold:
-                // 1. smux is the foreground app
+                // 1. GHN-code is the foreground app
                 // 2. This workspace is the selected one
                 // 3. This terminal is the focused pane
                 let isActuallyVisible = NSApp.isActive

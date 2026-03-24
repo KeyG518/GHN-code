@@ -83,7 +83,7 @@ final class Workspace: ObservableObject, Identifiable {
 
         // Inherit working directory: try reading from running process first, fall back to stored value
         var cwd = panels[panelID]?.workingDirectory
-        if let tv = panels[panelID]?.terminalView as? SmuxTerminalView,
+        if let tv = panels[panelID]?.terminalView as? GHNTerminalView,
            let process = tv.process {
             let pid = process.shellPid
             if pid != 0, let processCWD = getProcessCWD(pid: pid) {

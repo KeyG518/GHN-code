@@ -24,16 +24,16 @@
 		BEBCD9EF81B855B66D8D8F7A /* ActivityDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8424064F4B1CC7CCDF3DB794 /* ActivityDetector.swift */; };
 		CC96BCAAB3CFA688EFEE15A0 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739D8F3393F8BE15E9926877 /* WorkspaceView.swift */; };
 		CFF05A9BDEF675937A8E5FB8 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE51B1CC561D79C6FE87D95 /* Workspace.swift */; };
-		D4C77BBB3137BA1EF216F26C /* smuxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F61975D32383A122C8161F5 /* smuxApp.swift */; };
+		D4C77BBB3137BA1EF216F26C /* GHNCodeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F61975D32383A122C8161F5 /* GHNCodeApp.swift */; };
 		DE2BD471385A46DEC01004CC /* SplitTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8158AA7D1F0FD1438F588F5F /* SplitTree.swift */; };
 		E1A2B3C4D5E6F708B9C0D1E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F607B8C9D0E1F2 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		070FC009B130462BD6BC67C0 /* ActivityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityState.swift; sourceTree = "<group>"; };
-		1E199A4016A5A3D80DA2F613 /* smux.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = smux.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E199A4016A5A3D80DA2F613 /* GHN-code.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GHN-code.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E9D91F8A37681320AA5CFDC /* PersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceManager.swift; sourceTree = "<group>"; };
-		2F61975D32383A122C8161F5 /* smuxApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = smuxApp.swift; sourceTree = "<group>"; };
+		2F61975D32383A122C8161F5 /* GHNCodeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GHNCodeApp.swift; sourceTree = "<group>"; };
 		34A3827249178D5F6092F694 /* WatchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMode.swift; sourceTree = "<group>"; };
 		4A1FD3EC146EEBE8EFA6E57F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6250A16EA3D2BD49E47859C0 /* TerminalSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSurfaceView.swift; sourceTree = "<group>"; };
@@ -69,7 +69,7 @@
 			children = (
 				662BD8A140713D4291FE2494 /* AppCommands.swift */,
 				FFA89CCD60FC4D48A5EA10FD /* AppDelegate.swift */,
-				2F61975D32383A122C8161F5 /* smuxApp.swift */,
+				2F61975D32383A122C8161F5 /* GHNCodeApp.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -141,7 +141,7 @@
 		FB302C16376DF081FC891909 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1E199A4016A5A3D80DA2F613 /* smux.app */,
+				1E199A4016A5A3D80DA2F613 /* GHN-code.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -149,9 +149,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		40601123755F6E4C2405A43E /* smux */ = {
+		40601123755F6E4C2405A43E /* GHN-code */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9CC314D114BFE4B9810FC139 /* Build configuration list for PBXNativeTarget "smux" */;
+			buildConfigurationList = 9CC314D114BFE4B9810FC139 /* Build configuration list for PBXNativeTarget "GHN-code" */;
 			buildPhases = (
 				C76AF4662B8597779B92E5D8 /* Sources */,
 				71174264705A9AD061D3DE89 /* Frameworks */,
@@ -161,12 +161,12 @@
 			);
 			dependencies = (
 			);
-			name = smux;
+			name = "GHN-code";
 			packageProductDependencies = (
 				9154421B75395B16A10932B4 /* SwiftTerm */,
 			);
-			productName = smux;
-			productReference = 1E199A4016A5A3D80DA2F613 /* smux.app */;
+			productName = "GHN-code";
+			productReference = 1E199A4016A5A3D80DA2F613 /* GHN-code.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -178,7 +178,7 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2620;
 			};
-			buildConfigurationList = 63E95BEC2F6AA07F946CAA03 /* Build configuration list for PBXProject "smux" */;
+			buildConfigurationList = 63E95BEC2F6AA07F946CAA03 /* Build configuration list for PBXProject "GHN-code" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -194,7 +194,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				40601123755F6E4C2405A43E /* smux */,
+				40601123755F6E4C2405A43E /* GHN-code */,
 			);
 		};
 /* End PBXProject section */
@@ -232,7 +232,7 @@
 				CFF05A9BDEF675937A8E5FB8 /* Workspace.swift in Sources */,
 				0C835FDEA4D9EB64B492219D /* WorkspaceManager.swift in Sources */,
 				CC96BCAAB3CFA688EFEE15A0 /* WorkspaceView.swift in Sources */,
-				D4C77BBB3137BA1EF216F26C /* smuxApp.swift in Sources */,
+				D4C77BBB3137BA1EF216F26C /* GHNCodeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,7 +243,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Resources/smux.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Resources/GHNCode.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -254,7 +254,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = smux;
+				INFOPLIST_KEY_CFBundleDisplayName = "GHN-code";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -263,8 +263,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.smux.app;
-				PRODUCT_NAME = smux;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ghn.code;
+				PRODUCT_NAME = "GHN-code";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
@@ -400,7 +400,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Resources/smux.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Resources/GHNCode.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
@@ -411,7 +411,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = smux;
+				INFOPLIST_KEY_CFBundleDisplayName = "GHN-code";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -420,8 +420,8 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 0.1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.smux.app;
-				PRODUCT_NAME = smux;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ghn.code;
+				PRODUCT_NAME = "GHN-code";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.9;
@@ -431,7 +431,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		63E95BEC2F6AA07F946CAA03 /* Build configuration list for PBXProject "smux" */ = {
+		63E95BEC2F6AA07F946CAA03 /* Build configuration list for PBXProject "GHN-code" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				717FDB652DAF1D282A285DAE /* Debug */,
@@ -440,7 +440,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		9CC314D114BFE4B9810FC139 /* Build configuration list for PBXNativeTarget "smux" */ = {
+		9CC314D114BFE4B9810FC139 /* Build configuration list for PBXNativeTarget "GHN-code" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E9302506A873A918FDE6B783 /* Debug */,
